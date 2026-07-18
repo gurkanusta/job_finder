@@ -1,0 +1,30 @@
+{
+  "matching": {
+    "levelKeywords": ["junior", "jr", "jr.", "yeni mezun", "entry level", "entry-level", "graduate", "yeni̇ mezun", "stajyer"],
+    "roleKeywords": ["backend", "back-end", "back end", "yazılım geliştirici", "yazilim gelistirici", "software developer", "software engineer", ".net developer", "dotnet developer", "developer", "yazılım mühendisi", "geliştirici"],
+    "excludeKeywords": ["senior", "sr.", "sr ", "lead", "kıdemli", "kidemli", "manager", "müdür", "principal", "staff", "architect", "mimar"],
+    "requireBothGroups": true
+  },
+
+  "companies": [
+    { "name": "ÖRNEK-Greenhouse", "ats": "greenhouse", "token": "REPLACE_WITH_BOARD_TOKEN" },
+    { "name": "ÖRNEK-Lever", "ats": "lever", "token": "REPLACE_WITH_COMPANY_SLUG" }
+  ],
+
+  "scrapeTargets": [
+    { "site": "Kariyer.net", "url": "https://www.kariyer.net/is-ilanlari/junior+backend+developer" },
+    { "site": "Techcareer.net", "url": "https://www.techcareer.net/is-ilanlari?position=junior-backend-developer" },
+    { "site": "Coderspace", "url": "https://coderspace.io/ilanlar/?q=junior+backend" }
+  ],
+
+  "telegramChannels": [],
+
+  "linkedin": {
+    "imapHost": "imap.gmail.com",
+    "imapPort": 993,
+    "lookbackDays": 2,
+    "fromContains": "linkedin.com"
+  },
+
+  "seenRetentionDays": 60
+}

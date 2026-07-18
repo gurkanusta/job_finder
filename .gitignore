@@ -1,0 +1,16 @@
+# .NET build çıktıları
+bin/
+obj/
+*.user
+
+# Yerel test dosyaları (repoya girmesin)
+test-config.json
+test-seen.json
+
+# IDE
+.vs/
+.idea/
+
+# Yerel secret denemeleri (asla commit etme)
+.env
+*.local.json

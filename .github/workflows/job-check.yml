@@ -1,0 +1,54 @@
+name: Job Check
+
+on:
+  schedule:
+    # Her 3 saatte bir (UTC). GitHub cron'u yoğunlukta birkaç dakika gecikebilir.
+    - cron: '0 */3 * * *'
+  workflow_dispatch: {}   # Actions sekmesinden elle tetikleme (test için)
+
+# ÖNEMLİ: seen-jobs.json'u repoya geri push edebilmek için yazma izni ŞART.
+# Bu olmadan push sessizce başarısız olur ve her turda AYNI ilanlar tekrar bildirilir.
+permissions:
+  contents: write
+
+# İki çalıştırma çakışıp seen-jobs.json'da yarış oluşturmasın.
+concurrency:
+  group: job-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build
+        run: dotnet build JobFinder/JobFinder.csproj -c Release --nologo
+
+      - name: Run JobFinder
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          GMAIL_IMAP_USER:    ${{ secrets.GMAIL_IMAP_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: dotnet run --project JobFinder/JobFinder.csproj -c Release --no-build
+
+      - name: Commit seen-jobs.json
+        run: |
+          # git kimliği ayarlanmazsa commit ATILAMAZ → push sessizce başarısız → dedup bozulur.
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain seen-jobs.json)" ]; then
+            git add seen-jobs.json
+            git commit -m "chore: seen-jobs.json güncellendi [skip ci]"
+            git push
+            echo "seen-jobs.json push edildi."
+          else
+            echo "seen-jobs.json değişmedi, commit yok."
+          fi
