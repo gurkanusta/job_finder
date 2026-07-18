@@ -12,7 +12,7 @@
   "scrapeTargets": [],
 
   "techcareer": {
-    "positionKeywords": ["backend", "full stack", ".net", "java", "python", "yazılım geliştirici"],
+    "positionKeywords": ["backend", "back-end", ".net", "java", "python", "node", "spring", "golang", "full stack", "yazılım geliştirici", "junior", "yeni mezun"],
     "maxPages": 1
   },
 
