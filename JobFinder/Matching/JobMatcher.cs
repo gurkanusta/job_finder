@@ -29,7 +29,14 @@ public sealed class JobMatcher
         bool hasLevel = ContainsAny(norm, _cfg.LevelKeywords);
         bool hasRole = ContainsAny(norm, _cfg.RoleKeywords);
 
-        return _cfg.RequireBothGroups ? (hasLevel && hasRole) : (hasLevel || hasRole);
+        return _cfg.Mode.Trim().ToLowerInvariant() switch
+        {
+            "strict" => hasLevel && hasRole,
+            "role" => hasRole,
+            "either" => hasLevel || hasRole,
+            // mode boş → eski requireBothGroups davranışı.
+            _ => _cfg.RequireBothGroups ? (hasLevel && hasRole) : (hasLevel || hasRole),
+        };
     }
 
     private static bool ContainsAny(string normalizedTitle, IEnumerable<string> keywords)

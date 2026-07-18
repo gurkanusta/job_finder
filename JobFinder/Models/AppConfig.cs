@@ -14,6 +14,10 @@ public sealed class AppConfig
     [JsonPropertyName("scrapeTargets")]
     public List<ScrapeTarget> ScrapeTargets { get; set; } = new();
 
+    /// <summary>Techcareer.net resmi JSON API'si (BFF) üzerinden pozisyon araması.</summary>
+    [JsonPropertyName("techcareer")]
+    public TechcareerConfig Techcareer { get; set; } = new();
+
     [JsonPropertyName("telegramChannels")]
     public List<string> TelegramChannels { get; set; } = new();
 
@@ -40,8 +44,19 @@ public sealed class MatchingConfig
     public List<string> ExcludeKeywords { get; set; } = new();
 
     /// <summary>
-    /// true  = başlık HEM bir seviye HEM bir rol kelimesi içermeli (ör. "Junior Backend").
-    /// false = seviye VEYA rol kelimesinden biri yeterli (daha gevşek, daha çok gürültü).
+    /// Eşleştirme modu (mode boşsa requireBothGroups'a düşer):
+    ///   "strict" = başlıkta HEM seviye HEM rol geçmeli (ör. "Junior Backend"). En az bildirim.
+    ///   "role"   = rol geçsin + hariç tutulan (senior/lead/kıdemli) geçmesin YETER; seviye
+    ///              şartı yok. Türkiye ilan başlıkları çoğu zaman "junior" yazmadığı için
+    ///              gerçek junior ilanlarını da yakalar. ÖNERİLEN.
+    ///   "either" = seviye VEYA rol yeterli (en gevşek, en gürültülü).
+    /// </summary>
+    [JsonPropertyName("mode")]
+    public string Mode { get; set; } = "";
+
+    /// <summary>
+    /// mode boşken kullanılan eski davranış:
+    /// true = seviye VE rol; false = seviye VEYA rol.
     /// </summary>
     [JsonPropertyName("requireBothGroups")]
     public bool RequireBothGroups { get; set; } = true;
@@ -70,6 +85,21 @@ public sealed class ScrapeTarget
     /// <summary>Arama sonucu sayfasının tam URL'si.</summary>
     [JsonPropertyName("url")]
     public string Url { get; set; } = "";
+}
+
+public sealed class TechcareerConfig
+{
+    /// <summary>
+    /// Pozisyon araması için anahtar kelimeler. Her biri Techcareer'ın BFF API'sine
+    /// ayrı bir sorgu olur (select=position). Dönen ilanlar sonra JobMatcher ile
+    /// junior/backend filtresinden geçer. Boşsa Techcareer kaynağı atlanır.
+    /// </summary>
+    [JsonPropertyName("positionKeywords")]
+    public List<string> PositionKeywords { get; set; } = new();
+
+    /// <summary>Her anahtar kelime için taranacak sayfa sayısı (20 ilan/sayfa).</summary>
+    [JsonPropertyName("maxPages")]
+    public int MaxPages { get; set; } = 1;
 }
 
 public sealed class LinkedInConfig
