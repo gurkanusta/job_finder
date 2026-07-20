@@ -1,9 +1,9 @@
 {
   "matching": {
-    "levelKeywords": ["junior", "jr", "jr.", "yeni mezun", "entry level", "entry-level", "graduate", "yeni̇ mezun", "stajyer"],
+    "levelKeywords": ["junior", "jr", "jr.", "yeni mezun", "entry level", "entry-level", "graduate", "yeni̇ mezun", "stajyer", "trainee", "associate", "intern", "başlangıç", "baslangic", "yeni başlayan", "yeni baslayan", "az deneyim", "0-1 yıl", "0-1 yil", "1-2 yıl", "1-2 yil", "junıor"],
     "roleKeywords": ["backend", "back-end", "back end", "yazılım geliştirici", "yazilim gelistirici", "software developer", "software engineer", ".net developer", "dotnet developer", "developer", "yazılım mühendisi", "geliştirici"],
     "excludeKeywords": ["senior", "sr.", "sr ", "lead", "kıdemli", "kidemli", "manager", "müdür", "principal", "staff", "architect", "mimar"],
-    "mode": "role",
+    "mode": "strict",
     "requireBothGroups": true
   },
 
@@ -12,7 +12,7 @@
   "scrapeTargets": [],
 
   "techcareer": {
-    "positionKeywords": ["backend", "back-end", ".net", "java", "python", "node", "spring", "golang", "full stack", "yazılım geliştirici", "junior", "yeni mezun"],
+    "positionKeywords": ["junior backend", "junior developer", "junior yazılım", "junior .net", "junior java", "junior python", "junior full stack", "yeni mezun yazılım", "trainee developer", "associate developer", "backend", ".net", "java", "python", "full stack", "yazılım geliştirici", "junior", "yeni mezun", "stajyer yazılım"],
     "maxPages": 1
   },
 
