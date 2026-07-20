@@ -24,6 +24,10 @@ public sealed class AppConfig
     [JsonPropertyName("linkedin")]
     public LinkedInConfig LinkedIn { get; set; } = new();
 
+    /// <summary>LinkedIn'in public "guest jobs" API'si üzerinden doğrudan ilan araması (e-posta değil).</summary>
+    [JsonPropertyName("linkedinJobs")]
+    public LinkedInJobsConfig LinkedInJobs { get; set; } = new();
+
     /// <summary>seen-jobs.json'da bir anahtarı kaç gün sonra unutalım (dosya şişmesin).</summary>
     [JsonPropertyName("seenRetentionDays")]
     public int SeenRetentionDays { get; set; } = 60;
@@ -100,6 +104,25 @@ public sealed class TechcareerConfig
     /// <summary>Her anahtar kelime için taranacak sayfa sayısı (20 ilan/sayfa).</summary>
     [JsonPropertyName("maxPages")]
     public int MaxPages { get; set; } = 1;
+}
+
+public sealed class LinkedInJobsConfig
+{
+    /// <summary>
+    /// Arama kelimeleri. Her biri LinkedIn guest jobs API'sine ayrı sorgu olur
+    /// (keywords=...). Dönen ilanlar sonra JobMatcher (junior) filtresinden geçer.
+    /// Boşsa bu kaynak atlanır.
+    /// </summary>
+    [JsonPropertyName("keywords")]
+    public List<string> Keywords { get; set; } = new();
+
+    /// <summary>Konum filtresi (LinkedIn location parametresi). Ör. "Turkey", "Istanbul".</summary>
+    [JsonPropertyName("location")]
+    public string Location { get; set; } = "Turkey";
+
+    /// <summary>Her kelime için taranacak sayfa sayısı (~10 ilan/sayfa, start=0,10,20...).</summary>
+    [JsonPropertyName("maxPages")]
+    public int MaxPages { get; set; } = 2;
 }
 
 public sealed class LinkedInConfig

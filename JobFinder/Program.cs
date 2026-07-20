@@ -22,6 +22,7 @@ var allSources = new List<IJobSource>
     new GreenhouseSource(http, cfg.Companies),
     new LeverSource(http, cfg.Companies),
     new TechcareerSource(http, cfg.Techcareer),
+    new LinkedInJobsSource(http, cfg.LinkedInJobs),
     new LinkedInEmailSource(cfg.LinkedIn),
     new TelegramChannelSource(http, cfg.TelegramChannels),
 };

@@ -13,7 +13,13 @@
 
   "techcareer": {
     "positionKeywords": ["junior backend", "junior developer", "junior yazılım", "junior .net", "junior java", "junior python", "junior full stack", "yeni mezun yazılım", "trainee developer", "associate developer", "backend", ".net", "java", "python", "full stack", "yazılım geliştirici", "junior", "yeni mezun", "stajyer yazılım"],
-    "maxPages": 1
+    "maxPages": 3
+  },
+
+  "linkedinJobs": {
+    "keywords": ["junior backend", "junior developer", "junior software", "junior java", "junior .net", "junior python", "junior full stack", "new grad software", "yeni mezun yazılım", "associate software engineer"],
+    "location": "Turkey",
+    "maxPages": 2
   },
 
   "telegramChannels": [],
