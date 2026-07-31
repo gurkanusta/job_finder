@@ -18,6 +18,14 @@ public sealed class JobPosting
     public required string Url { get; init; }
 
     /// <summary>
+    /// İlan metni (varsa, düz metne indirgenmiş). Türkiye ilanlarının başlığında
+    /// "junior" YAZMAZ — seviye bilgisi ("yeni mezun", "en az 3 yıl deneyim")
+    /// neredeyse hep bu metnin içindedir. JobMatcher seviye tespitinde buna bakar.
+    /// Boşsa sadece başlığa göre karar verilir.
+    /// </summary>
+    public string Description { get; init; } = "";
+
+    /// <summary>
     /// Opsiyonel ilan tarihi (varsa). Bildirimde/sıralamada kullanılabilir.
     /// </summary>
     public DateTimeOffset? PostedAt { get; init; }
@@ -29,6 +37,16 @@ public sealed class JobPosting
     public string? DedupKeyOverride { get; init; }
 
     public string DedupKey => DedupKeyOverride ?? NormalizeUrl(Url);
+
+    /// <summary>
+    /// Kaynaklar ARASI tekilleştirme anahtarı (varsa). Techcareer.net, Kariyer.net'in
+    /// şirketi ve ikisi AYNI ilan id'sini kullanıyor — ör. 4505555 hem
+    /// techcareer.net/jobs/detail/yeni-mezun-bilgisayar-muhendisi-4505555 hem
+    /// kariyer.net/is-ilani/gizli-firma-yeni-mezun-bilgisayar-muhendisi-4505555.
+    /// URL'ler farklı olduğu için normal DedupKey bunu yakalayamaz ve aynı ilan
+    /// Telegram'a iki kez düşer. Bu alan o çakışmayı keser.
+    /// </summary>
+    public string? CrossSourceKey { get; init; }
 
     // Bunlar sadece takip amaçlı; dedup'ta yok sayılır. gh_jid, id gibi ANLAMLI
     // paramlar KORUNUR (yoksa aynı board'daki tüm ilanlar tek anahtara çöker).

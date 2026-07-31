@@ -18,6 +18,10 @@ public sealed class AppConfig
     [JsonPropertyName("techcareer")]
     public TechcareerConfig Techcareer { get; set; } = new();
 
+    /// <summary>Kariyer.net arama sonuçları (?kw= sorgusu + ad-card parse).</summary>
+    [JsonPropertyName("kariyer")]
+    public KariyerConfig Kariyer { get; set; } = new();
+
     [JsonPropertyName("telegramChannels")]
     public List<string> TelegramChannels { get; set; } = new();
 
@@ -64,6 +68,15 @@ public sealed class MatchingConfig
     /// </summary>
     [JsonPropertyName("requireBothGroups")]
     public bool RequireBothGroups { get; set; } = true;
+
+    /// <summary>
+    /// true = başlıkta seviye kelimesi yoksa ilan METNİNE bak ("yeni mezun",
+    /// "0-2 yıl deneyim"). Türkiye ilanlarının başlığında "junior" yazmadığı için
+    /// strict mod bu olmadan neredeyse SADECE LinkedIn ilanı geçiriyor.
+    /// "en az 3 yıl deneyim" geçen ilanlar yine elenir. Rol şartı hep başlıktan.
+    /// </summary>
+    [JsonPropertyName("useDescriptionForLevel")]
+    public bool UseDescriptionForLevel { get; set; } = true;
 }
 
 public sealed class CompanyEntry
@@ -104,6 +117,30 @@ public sealed class TechcareerConfig
     /// <summary>Her anahtar kelime için taranacak sayfa sayısı (20 ilan/sayfa).</summary>
     [JsonPropertyName("maxPages")]
     public int MaxPages { get; set; } = 1;
+
+    /// <summary>
+    /// Filtresiz "tüm açık ilanlar" listesinde taranacak sayfa sayısı (20 ilan/sayfa).
+    /// Techcareer'da toplam ~190 açık ilan var, yani 10 sayfa hepsini kapsar.
+    /// Kelime araması havuzun sadece 1/5'ini döndürdüğü için asıl kapsama buradan gelir.
+    /// </summary>
+    [JsonPropertyName("allJobsMaxPages")]
+    public int AllJobsMaxPages { get; set; } = 10;
+}
+
+public sealed class KariyerConfig
+{
+    /// <summary>
+    /// Arama kelimeleri. Her biri kariyer.net'e ?kw=... sorgusu olur.
+    /// DİKKAT: /is-ilanlari/junior+backend gibi PATH tabanlı URL'ler aramayı yok sayıp
+    /// alakasız ilan (aşçı, muhasebe) döndürüyor — ?kw= tek çalışan biçim.
+    /// Boşsa bu kaynak atlanır.
+    /// </summary>
+    [JsonPropertyName("keywords")]
+    public List<string> Keywords { get; set; } = new();
+
+    /// <summary>Her kelime için taranacak sayfa sayısı.</summary>
+    [JsonPropertyName("maxPages")]
+    public int MaxPages { get; set; } = 2;
 }
 
 public sealed class LinkedInJobsConfig

@@ -22,6 +22,7 @@ var allSources = new List<IJobSource>
     new GreenhouseSource(http, cfg.Companies),
     new LeverSource(http, cfg.Companies),
     new TechcareerSource(http, cfg.Techcareer),
+    new KariyerSource(http, cfg.Kariyer),
     new LinkedInJobsSource(http, cfg.LinkedInJobs),
     new LinkedInEmailSource(cfg.LinkedIn),
     new TelegramChannelSource(http, cfg.TelegramChannels),
@@ -88,6 +89,13 @@ foreach (var job in matched)
 {
     if (!seenThisRun.Add(job.DedupKey)) continue;
     if (store.IsSeen(job.DedupKey)) continue;
+    // Techcareer + Kariyer aynı ilanı farklı URL'lerle veriyor; ortak id varsa
+    // ikincisini ele (hem bu turda hem geçmiş turlarda).
+    if (job.CrossSourceKey is { } xkey)
+    {
+        if (!seenThisRun.Add(xkey)) continue;
+        if (store.IsSeen(xkey)) continue;
+    }
     newJobs.Add(job);
 }
 
@@ -102,6 +110,7 @@ foreach (var job in newJobs)
 {
     await notifier.SendJobAsync(job, cts.Token);
     store.MarkSeen(job.DedupKey);
+    if (job.CrossSourceKey is { } xkey) store.MarkSeen(xkey);
 }
 
 // ─── Kaydet ──────────────────────────────────────────────────────────────────
