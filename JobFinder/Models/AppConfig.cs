@@ -11,6 +11,10 @@ public sealed class AppConfig
     [JsonPropertyName("companies")]
     public List<CompanyEntry> Companies { get; set; } = new();
 
+    /// <summary>Greenhouse/Lever board'larına özel ayarlar (lokasyon filtresi).</summary>
+    [JsonPropertyName("ats")]
+    public AtsConfig Ats { get; set; } = new();
+
     [JsonPropertyName("scrapeTargets")]
     public List<ScrapeTarget> ScrapeTargets { get; set; } = new();
 
@@ -91,6 +95,25 @@ public sealed class CompanyEntry
     /// <summary>Greenhouse board token'ı ya da Lever şirket slug'ı.</summary>
     [JsonPropertyName("token")]
     public string Token { get; set; } = "";
+
+    /// <summary>
+    /// true = bu şirketin TÜM ilanları Türkiye'de; ats.locationAllow filtresi atlanır.
+    /// Lokasyon alanını bozuk dolduran board'lar için (ör. Peak Games her ilana
+    /// lokasyon olarak "Full-time" yazıyor — filtre uygulansa hepsi elenirdi).
+    /// </summary>
+    [JsonPropertyName("allJobsInTurkey")]
+    public bool AllJobsInTurkey { get; set; }
+}
+
+public sealed class AtsConfig
+{
+    /// <summary>
+    /// Greenhouse/Lever ilanlarında kabul edilen lokasyon parçaları (alt dize eşleşmesi).
+    /// Boşsa filtre uygulanmaz. Bu board'lar uluslararası olduğu için filtresiz
+    /// bırakılırsa Teksas/Bengaluru ilanları da Telegram'a düşer.
+    /// </summary>
+    [JsonPropertyName("locationAllow")]
+    public List<string> LocationAllow { get; set; } = new();
 }
 
 public sealed class ScrapeTarget
@@ -164,6 +187,15 @@ public sealed class LinkedInJobsConfig
 
 public sealed class LinkedInConfig
 {
+    /// <summary>
+    /// LinkedIn Job Alert maillerini IMAP ile okuma kaynağı açık mı.
+    /// 2026-07-31'de KAPATILDI: 34 mail tarayıp 0 ilan linki çıkarıyordu ve zaten
+    /// linkedinJobs kaynağı aynı ilanları doğrudan siteden çekiyor. Kullanıcı
+    /// LinkedIn ilanlarını e-postada da görüyor — bu kaynak sadece log gürültüsüydü.
+    /// </summary>
+    [JsonPropertyName("enabled")]
+    public bool Enabled { get; set; } = true;
+
     /// <summary>IMAP sunucusu (Gmail için imap.gmail.com).</summary>
     [JsonPropertyName("imapHost")]
     public string ImapHost { get; set; } = "imap.gmail.com";

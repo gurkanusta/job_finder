@@ -19,8 +19,8 @@ using var http = HttpClientFactory.Create();
 // ─── Kaynakları kaydet ───────────────────────────────────────────────────────
 var allSources = new List<IJobSource>
 {
-    new GreenhouseSource(http, cfg.Companies),
-    new LeverSource(http, cfg.Companies),
+    new GreenhouseSource(http, cfg.Companies, cfg.Ats),
+    new LeverSource(http, cfg.Companies, cfg.Ats),
     new TechcareerSource(http, cfg.Techcareer),
     new KariyerSource(http, cfg.Kariyer),
     new LinkedInJobsSource(http, cfg.LinkedInJobs),

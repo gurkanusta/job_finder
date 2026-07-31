@@ -12,14 +12,16 @@ public sealed class GreenhouseSource : IJobSource
 {
     private readonly HttpClient _http;
     private readonly IReadOnlyList<CompanyEntry> _companies;
+    private readonly IReadOnlyList<string> _locationAllow;
 
     public string Name => "greenhouse";
 
-    public GreenhouseSource(HttpClient http, IEnumerable<CompanyEntry> companies)
+    public GreenhouseSource(HttpClient http, IEnumerable<CompanyEntry> companies, AtsConfig? ats = null)
     {
         _http = http;
         _companies = companies.Where(c =>
             string.Equals(c.Ats, "greenhouse", StringComparison.OrdinalIgnoreCase)).ToList();
+        _locationAllow = ats?.LocationAllow ?? new List<string>();
     }
 
     public async Task<IReadOnlyList<JobPosting>> FetchAsync(CancellationToken ct)
@@ -35,6 +37,7 @@ public sealed class GreenhouseSource : IJobSource
 
                 if (!doc.RootElement.TryGetProperty("jobs", out var jobs)) continue;
 
+                int skipped = 0;
                 foreach (var job in jobs.EnumerateArray())
                 {
                     var title = job.TryGetProperty("title", out var t) ? t.GetString() ?? "" : "";
@@ -51,6 +54,9 @@ public sealed class GreenhouseSource : IJobSource
 
                     if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(absUrl)) continue;
 
+                    // Greenhouse board'ları uluslararası — Türkiye dışını burada ele.
+                    if (!AtsLocationFilter.IsAllowed(location, company, _locationAllow)) { skipped++; continue; }
+
                     result.Add(new JobPosting
                     {
                         Source = "Greenhouse",
@@ -65,7 +71,8 @@ public sealed class GreenhouseSource : IJobSource
                     });
                 }
 
-                Console.WriteLine($"[greenhouse] {company.Name}: {jobs.GetArrayLength()} ilan alındı");
+                Console.WriteLine($"[greenhouse] {company.Name}: {jobs.GetArrayLength()} ilan alındı" +
+                                  (skipped > 0 ? $" ({skipped} tanesi Türkiye dışı — elendi)" : ""));
             }
             catch (Exception ex)
             {

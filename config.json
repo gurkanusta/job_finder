@@ -1,6 +1,6 @@
 {
   "matching": {
-    "levelKeywords": ["junior", "jr", "jr.", "yeni mezun", "entry level", "entry-level", "graduate", "yeni̇ mezun", "stajyer", "trainee", "associate", "intern", "başlangıç", "baslangic", "yeni başlayan", "yeni baslayan", "az deneyim", "0-1 yıl", "0-1 yil", "1-2 yıl", "1-2 yil", "junıor"],
+    "levelKeywords": ["junior", "jr", "jr.", "yeni mezun", "entry level", "entry-level", "graduate", "new grad", "newgrad", "new graduate", "yeni̇ mezun", "stajyer", "trainee", "associate", "intern", "başlangıç", "baslangic", "yeni başlayan", "yeni baslayan", "az deneyim", "0-1 yıl", "0-1 yil", "1-2 yıl", "1-2 yil", "junıor"],
     "roleKeywords": ["backend", "back-end", "back end", "yazılım geliştirici", "yazilim gelistirici", "software developer", "software engineer", ".net developer", "dotnet developer", "developer", "yazılım mühendisi", "geliştirici", "yazılım uzmanı", "yazılım", "bilgisayar mühendisi", "fullstack", "full stack", "full-stack", "programcı", "yazılımcı"],
     "excludeKeywords": ["senior", "sr.", "sr ", "lead", "kıdemli", "kidemli", "manager", "müdür", "principal", "staff", "architect", "mimar", "test uzman", "test mühendis", "test muhendis", "test ve devreye", "test otomasyon", "test analist", "test engineer", "test specialist", "tester", "qa uzman", "qa engineer", "kalite kontrol"],
     "mode": "strict",
@@ -8,7 +8,21 @@
     "useDescriptionForLevel": true
   },
 
-  "companies": [],
+  "companies": [
+    { "name": "Trendyol",       "ats": "lever",      "token": "trendyol" },
+    { "name": "Dream Games",    "ats": "lever",      "token": "dreamgames" },
+    { "name": "iyzico",         "ats": "lever",      "token": "iyzico" },
+    { "name": "Commencis",      "ats": "lever",      "token": "commencis" },
+    { "name": "Çiçeksepeti",    "ats": "lever",      "token": "ciceksepeti" },
+    { "name": "Peak Games",     "ats": "lever",      "token": "peakgames", "allJobsInTurkey": true },
+    { "name": "Picus Security", "ats": "lever",      "token": "picus" },
+    { "name": "Insider",        "ats": "greenhouse", "token": "insider" },
+    { "name": "Udemy",          "ats": "greenhouse", "token": "udemy" }
+  ],
+
+  "ats": {
+    "locationAllow": ["istanbul", "i̇stanbul", "türkiye", "turkiye", "turkey", "ankara", "izmir", "i̇zmir", "maslak", "zincirlikuyu", "remote - turkey", "türkiye geneli"]
+  },
 
   "scrapeTargets": [],
 
@@ -32,6 +46,7 @@
   "telegramChannels": [],
 
   "linkedin": {
+    "enabled": false,
     "imapHost": "imap.gmail.com",
     "imapPort": 993,
     "lookbackDays": 2,

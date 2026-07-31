@@ -29,6 +29,12 @@ public sealed class LinkedInEmailSource : IJobSource
 
     public async Task<IReadOnlyList<JobPosting>> FetchAsync(CancellationToken ct)
     {
+        if (!_cfg.Enabled)
+        {
+            Console.WriteLine("[linkedin] config'te kapalı (linkedin.enabled=false) — atlanıyor.");
+            return Array.Empty<JobPosting>();
+        }
+
         var user = Environment.GetEnvironmentVariable("GMAIL_IMAP_USER");
         var pass = Environment.GetEnvironmentVariable("GMAIL_APP_PASSWORD");
         if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(pass))
