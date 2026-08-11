@@ -6,8 +6,9 @@ namespace JobFinder.Sources;
 /// <summary>
 /// Greenhouse/Lever board'ları ULUSLARARASI: Trendyol'un Riyad/Atina/Bükreş,
 /// Dream Games'in Londra, Insider'ın New York/Singapur ilanları aynı board'da.
-/// Techcareer/Kariyer/LinkedIn kaynakları zaten Türkiye'ye kilitli olduğu için
-/// lokasyon filtresi SADECE bu iki ATS kaynağına uygulanır.
+/// Techcareer/Kariyer/LinkedIn ise anahtar kelimeyle Türkiye GENELİNDE arama yapıyor
+/// (şehir bazında sorgulamıyor), o yüzden aynı allow-listesi Program.cs'te TÜM
+/// kaynakların çıktısına (company parametresiz overload ile) uygulanır.
 ///
 /// Boş lokasyon = karar veremiyoruz → GEÇİRİLİR (ilan kaybetmemek için).
 /// Bazı board'lar lokasyon alanını yanlış dolduruyor (ör. Peak Games "Full-time"
@@ -19,6 +20,12 @@ public static class AtsLocationFilter
     {
         // Şirketin tüm ilanları zaten Türkiye'de → lokasyon alanına hiç bakma.
         if (company.AllJobsInTurkey) return true;
+        return IsAllowed(location, allow);
+    }
+
+    /// <summary>Company/allJobsInTurkey bağlamı olmayan kaynaklar (Techcareer, Kariyer, LinkedIn) için.</summary>
+    public static bool IsAllowed(string location, IReadOnlyList<string> allow)
+    {
         // Filtre tanımlı değilse kimseyi eleme.
         if (allow.Count == 0) return true;
         // Lokasyon bilgisi yoksa eleme (yanlış negatif riskini almıyoruz).

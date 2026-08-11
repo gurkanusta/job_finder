@@ -79,8 +79,20 @@ var seenPath = !string.IsNullOrWhiteSpace(seenEnv)
       ?? Path.Combine(Directory.GetCurrentDirectory(), "seen-jobs.json");
 var store = SeenJobsStore.Load(seenPath);
 
-var matched = collected.Where(j => matcher.IsMatch(j)).ToList();
-Console.WriteLine($"Eşleşen (junior filtresi geçen): {matched.Count} / {collected.Count}");
+// Greenhouse/Lever kendi kaynağı içinde ats.locationAllow ile zaten filtrelendi
+// (allJobsInTurkey bypass'ı dahil) — burada tekrar süzülmezler. Techcareer/Kariyer/
+// LinkedIn ise Türkiye genelinde anahtar kelime araması yapıyor, şehir filtrelemiyor;
+// aynı allow-listesi (artık sadece İstanbul) onlara burada uygulanır.
+var locationAllow = cfg.Ats.LocationAllow;
+var locationFiltered = collected
+    .Where(j => j.Source is "Greenhouse" or "Lever" || AtsLocationFilter.IsAllowed(j.Location, locationAllow))
+    .ToList();
+var locSkipped = collected.Count - locationFiltered.Count;
+if (locSkipped > 0)
+    Console.WriteLine($"Lokasyon filtresiyle elenen (İstanbul dışı): {locSkipped}");
+
+var matched = locationFiltered.Where(j => matcher.IsMatch(j)).ToList();
+Console.WriteLine($"Eşleşen (junior filtresi geçen): {matched.Count} / {locationFiltered.Count}");
 
 // Aynı tur içinde tekrar edenleri de temizle.
 var newJobs = new List<JobPosting>();

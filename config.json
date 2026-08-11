@@ -21,7 +21,7 @@
   ],
 
   "ats": {
-    "locationAllow": ["istanbul", "i̇stanbul", "türkiye", "turkiye", "turkey", "ankara", "izmir", "i̇zmir", "maslak", "zincirlikuyu", "remote - turkey", "türkiye geneli"]
+    "locationAllow": ["istanbul", "i̇stanbul", "maslak", "zincirlikuyu"]
   },
 
   "scrapeTargets": [],
@@ -39,7 +39,7 @@
 
   "linkedinJobs": {
     "keywords": ["junior backend", "junior developer", "junior software", "junior java", "junior .net", "junior python", "junior full stack", "new grad software", "yeni mezun yazılım", "associate software engineer"],
-    "location": "Turkey",
+    "location": "Istanbul, Turkey",
     "maxPages": 2
   },
 
