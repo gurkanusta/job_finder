@@ -2,8 +2,8 @@ name: Job Check
 
 on:
   schedule:
-    # Her 3 saatte bir (UTC). GitHub cron'u yoğunlukta birkaç dakika gecikebilir.
-    - cron: '0 */3 * * *'
+    # Her 2 saatte bir (UTC). GitHub cron'u yoğunlukta birkaç dakika gecikebilir.
+    - cron: '0 */2 * * *'
   workflow_dispatch: {}   # Actions sekmesinden elle tetikleme (test için)
 
 # ÖNEMLİ: seen-jobs.json'u repoya geri push edebilmek için yazma izni ŞART.
