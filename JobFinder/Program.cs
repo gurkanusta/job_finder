@@ -26,6 +26,7 @@ var allSources = new List<IJobSource>
     new LinkedInJobsSource(http, cfg.LinkedInJobs),
     new LinkedInEmailSource(cfg.LinkedIn),
     new TelegramChannelSource(http, cfg.TelegramChannels),
+    new TalentProgramDiscoverySource(http, cfg.TalentDiscovery),
 };
 // Config'teki her scrape hedefi ayrı bir kaynak olur (--source kariyer/techcareer/coderspace).
 foreach (var target in cfg.ScrapeTargets)

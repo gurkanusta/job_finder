@@ -7,6 +7,14 @@ obj/
 test-config.json
 test-seen.json
 
+# Python (cv_tailor)
+__pycache__/
+*.pyc
+
+# Kişisel profil + üretilen CV'ler (repoya girmesin — telefon/CV gibi kişisel veri)
+profile/
+tailored/
+
 # IDE
 .vs/
 .idea/

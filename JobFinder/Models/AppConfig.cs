@@ -36,6 +36,12 @@ public sealed class AppConfig
     [JsonPropertyName("linkedinJobs")]
     public LinkedInJobsConfig LinkedInJobs { get; set; } = new();
 
+    /// <summary>
+    /// Otomatik yetenek/staj programı keşif ayarları.
+    /// </summary>
+    [JsonPropertyName("talentDiscovery")]
+    public TalentDiscoveryConfig TalentDiscovery { get; set; } = new();
+
     /// <summary>seen-jobs.json'da bir anahtarı kaç gün sonra unutalım (dosya şişmesin).</summary>
     [JsonPropertyName("seenRetentionDays")]
     public int SeenRetentionDays { get; set; } = 60;
@@ -210,4 +216,27 @@ public sealed class LinkedInConfig
     /// <summary>Gönderen filtresi (LinkedIn job alert maillerinin from adresi).</summary>
     [JsonPropertyName("fromContains")]
     public string FromContains { get; set; } = "linkedin.com";
+}
+
+/// <summary>
+/// Otomatik yetenek/staj programı keşif ayarları.
+/// Web araması ile şirketlerin "genç yetenek", "yetenek programı", "staj programı" sayfalarını bulur.
+/// </summary>
+public sealed class TalentDiscoveryConfig
+{
+    /// <summary>
+    /// Arama motoruna gönderilecek sorgular. Her biri ayrı bir arama olur.
+    /// Ör: "genç yetenek programı site:kariyer.net", "staj programı yazılım site:linkedin.com"
+    /// Boşsa bu kaynak atlanır.
+    /// </summary>
+    [JsonPropertyName("keywords")]
+    public List<string> Keywords { get; set; } = new();
+
+    /// <summary>Her anahtar kelime için taranacak sayfa sayısı (DuckDuckGo 50 sonuç/sayfa).</summary>
+    [JsonPropertyName("maxPages")]
+    public int MaxPages { get; set; } = 2;
+
+    /// <summary>İki arama/istek arası bekleme (ms) - rate limit önlemi.</summary>
+    [JsonPropertyName("delayMs")]
+    public int DelayMs { get; set; } = 1500;
 }

@@ -9,11 +9,11 @@ namespace JobFinder.Sources;
 /// Kariyer.net / Techcareer.net / Coderspace gibi siteler için "best effort" scraper.
 /// Her scrapeTarget için bir örnek oluşturulur; Name site adından türetilir
 /// (ör. "kariyer", "techcareer", "coderspace") → --source ile ayrı test edilebilir.
-///
+/// 
 /// KIRILGANLIK NOTU: Bu siteler anti-bot koruması kullanır ve/veya JS ile render edilir.
 /// GitHub Actions'ın datacenter IP'sinden 403/boş dönebilir. Bu yüzden HER denemede
 /// status kodu, içerik uzunluğu ve bulunan ilan sayısı loglanır — sessiz başarısızlık yok.
-///
+/// 
 /// Çıkarım stratejisi (sırayla dener, ilk sonuç vereni kullanır):
 ///   1) JSON-LD schema.org/JobPosting  (en standart, en dayanıklı)
 ///   2) __NEXT_DATA__ / __NUXT__ gömülü JSON içinden başlık+link toplama
@@ -81,6 +81,7 @@ public sealed class WebScrapeSource : IJobSource
 
             AddRange(FromJsonLd(html));
             if (jobs.Count == 0) AddRange(FromAnchors(html));
+            if (jobs.Count == 0) AddRange(FromTitle(html));
 
             var strategy = jobs.Count > 0 ? "" : " (hiç ilan çıkarılamadı — muhtemelen JS-render veya yapı değişikliği)";
             Console.WriteLine($"[{Name}] HTTP {(int)resp.StatusCode}, uzunluk={html.Length}, ilan={jobs.Count}{strategy}");
@@ -192,9 +193,9 @@ public sealed class WebScrapeSource : IJobSource
         // Site'e göre ilan detay linki paterni.
         var pattern = Name switch
         {
-            "kariyer" => @"/is-ilani/|/ilan/",
-            "techcareer" => @"/ilan/|/jobs?/|/is-ilani/",
-            "coderspace" => @"/ilan/|/is-ilanlari/",
+            "kariyer" => @"/is-ilani|/ilan/",
+            "techcareer" => @"/ilan|/jobs?|/is-ilani/",
+            "coderspace" => @"/ilan|/is-ilanlari/",
             _ => @"/(ilan|is-ilani|job|jobs|pozisyon)/",
         };
         var rx = new Regex(pattern, RegexOptions.IgnoreCase);
@@ -228,5 +229,50 @@ public sealed class WebScrapeSource : IJobSource
             return new Uri(baseUri, href).ToString();
         }
         catch { return href; }
+    }
+
+    // ── Strateji 3: Title fallback ────────────────────────────────────────
+    private IEnumerable<JobPosting> FromTitle(string html)
+    {
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+        var titleNode = doc.DocumentNode.SelectSingleNode("//title");
+        if (titleNode == null) yield break;
+        var title = HtmlEntity.DeEntitize(titleNode.InnerText);
+        if (string.IsNullOrWhiteSpace(title)) yield break;
+        title = Regex.Replace(title, @"\s+", " ").Trim();
+        // Optionally, try to get a description from meta description or first paragraph
+        var description = "";
+        var metaDesc = doc.DocumentNode.SelectSingleNode("//meta[@name='description']");
+        if (metaDesc != null)
+        {
+            var content = metaDesc.GetAttributeValue("content", "");
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                description = HtmlEntity.DeEntitize(content);
+                description = Regex.Replace(description, @"\s+", " ").Trim();
+            }
+        }
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            var firstP = doc.DocumentNode.SelectSingleNode("//p");
+            if (firstP != null)
+            {
+                var text = HtmlEntity.DeEntitize(firstP.InnerText);
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    description = Regex.Replace(text, @"\s+", " ").Trim();
+                    // Limit length
+                    if (description.Length > 500) description = description.Substring(0, 500);
+                }
+            }
+        }
+        yield return new JobPosting
+        {
+            Source = _target.Site,
+            Title = title,
+            Description = description,
+            Url = _target.Url
+        };
     }
 }

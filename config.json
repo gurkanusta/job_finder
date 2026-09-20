@@ -1,7 +1,7 @@
 {
   "matching": {
-    "levelKeywords": ["junior", "jr", "jr.", "yeni mezun", "entry level", "entry-level", "graduate", "new grad", "newgrad", "new graduate", "yeni̇ mezun", "stajyer", "trainee", "associate", "intern", "başlangıç", "baslangic", "yeni başlayan", "yeni baslayan", "az deneyim", "0-1 yıl", "0-1 yil", "1-2 yıl", "1-2 yil", "junıor"],
-    "roleKeywords": ["backend", "back-end", "back end", "yazılım geliştirici", "yazilim gelistirici", "software developer", "software engineer", ".net developer", "dotnet developer", "developer", "yazılım mühendisi", "geliştirici", "yazılım uzmanı", "yazılım", "bilgisayar mühendisi", "fullstack", "full stack", "full-stack", "programcı", "yazılımcı"],
+    "levelKeywords": ["junior", "jr", "jr.", "yeni mezun", "entry level", "entry-level", "graduate", "new grad", "newgrad", "new graduate", "yeni̇ mezun", "stajyer", "trainee", "associate", "intern", "başlangıç", "baslangic", "yeni başlayan", "yeni baslayan", "az deneyim", "0-1 yıl", "0-1 yil", "1-2 yıl", "1-2 yil", "junıor", "genç yetenek", "staj", "talent", "yaz stajı", "yaz staji", "talent camp", "gncytnk"],
+    "roleKeywords": ["backend", "back-end", "back end", "yazılım geliştirici", "yazilim gelistirici", "software developer", "software engineer", ".net developer", "dotnet developer", "developer", "yazılım mühendisi", "geliştirici", "yazılım uzmanı", "yazılım", "bilgisayar mühendisi", "fullstack", "full stack", "full-stack", "programcı", "yazılımcı", "staj", "talent", "yetenek", "program", "kamp", "yazılım", "yazilim"],
     "excludeKeywords": ["senior", "sr.", "sr ", "lead", "kıdemli", "kidemli", "manager", "müdür", "principal", "staff", "architect", "mimar", "test uzman", "test mühendis", "test muhendis", "test ve devreye", "test otomasyon", "test analist", "test engineer", "test specialist", "tester", "qa uzman", "qa engineer", "kalite kontrol"],
     "mode": "strict",
     "requireBothGroups": true,
@@ -24,34 +24,56 @@
     "locationAllow": ["istanbul", "i̇stanbul", "maslak", "zincirlikuyu"]
   },
 
-  "scrapeTargets": [],
+  "scrapeTargets": [
+      { "site": "turkcell-geny", "url": "http://kariyerim.turkcell.com.tr/genc-yetenek" },
+      { "site": "turkcell-staj", "url": "https://kariyerim.turkcell.com.tr/gncytnkstaj" },
+      { "site": "garantibbva-kariyer", "url": "https://kariyer.garantibbva.com.tr/" },
+      { "site": "garantibbva-talentcamp", "url": "https://anbeankampus.co/garanti-bbva/talent-camp-2025/" },
+      { "site": "garantibbva-yazstaj", "url": "https://www.youthall.com/tr/yetenek-programlari/garanti-bbva-teknoloji-yaz-staji-programi" }
+    ],
 
   "techcareer": {
-    "positionKeywords": ["junior backend", "junior developer", "junior yazılım", "junior .net", "junior java", "junior python", "junior full stack", "yeni mezun yazılım", "trainee developer", "associate developer", "backend", ".net", "java", "python", "full stack", "yazılım geliştirici", "junior", "yeni mezun", "stajyer yazılım"],
-    "maxPages": 3,
-    "allJobsMaxPages": 10
-  },
+      "positionKeywords": ["junior backend", "junior developer", "junior yazılım", "junior .net", "junior java", "junior python", "junior full stack", "yeni mezun yazılım", "trainee developer", "associate developer", "backend", ".net", "java", "python", "full stack", "yazılım geliştirici", "junior", "yeni mezun", "stajyer yazılım", "genç yetenek", "yetenek programı", "staj programı", "yaz stajı", "management trainee", "graduate program", "trainee program", "internship"],
+      "maxPages": 3,
+      "allJobsMaxPages": 10
+    },
 
-  "kariyer": {
-    "keywords": ["junior backend", "junior developer", "junior yazılım", "yeni mezun yazılım", "junior .net", "junior java", "junior python", "junior full stack", "yazılım geliştirici", "backend developer"],
-    "maxPages": 2
-  },
+    "kariyer": {
+      "keywords": ["junior backend", "junior developer", "junior yazılım", "yeni mezun yazılım", "junior .net", "junior java", "junior python", "junior full stack", "yazılım geliştirici", "backend developer", "genç yetenek", "yetenek programı", "staj programı", "yaz stajı", "management trainee", "graduate program", "trainee program", "internship", "stajyer"],
+      "maxPages": 2
+    },
 
   "linkedinJobs": {
-    "keywords": ["junior backend", "junior developer", "junior software", "junior java", "junior .net", "junior python", "junior full stack", "new grad software", "yeni mezun yazılım", "associate software engineer"],
-    "location": "Istanbul, Turkey",
-    "maxPages": 2
-  },
+      "keywords": ["junior backend", "junior developer", "junior software", "junior java", "junior .net", "junior python", "junior full stack", "new grad software", "yeni mezun yazılım", "associate software engineer", "genç yetenek", "yetenek programı", "staj programı", "yaz stajı", "management trainee", "graduate program", "trainee program", "internship"],
+      "location": "Istanbul, Turkey",
+      "maxPages": 2
+    },
 
   "telegramChannels": [],
 
   "linkedin": {
-    "enabled": false,
-    "imapHost": "imap.gmail.com",
-    "imapPort": 993,
-    "lookbackDays": 2,
-    "fromContains": "linkedin.com"
-  },
+      "enabled": false,
+      "imapHost": "imap.gmail.com",
+      "imapPort": 993,
+      "lookbackDays": 2,
+      "fromContains": "linkedin.com"
+    },
 
-  "seenRetentionDays": 60
-}
+    "talentDiscovery": {
+      "keywords": [
+        "genç yetenek programı site:kariyer.net",
+        "genç yetenek programı site:techcareer.net",
+        "staj programı yazılım site:kariyer.net",
+        "staj programı yazılım site:techcareer.net",
+        "yetenek programı site:linkedin.com",
+        "yaz stajı programı site:kariyer.net",
+        "management trainee programı site:kariyer.net",
+        "graduate program site:kariyer.net",
+        "trainee program site:kariyer.net"
+      ],
+      "maxPages": 2,
+      "delayMs": 1500
+    },
+
+    "seenRetentionDays": 60
+  }
