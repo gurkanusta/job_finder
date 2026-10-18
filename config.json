@@ -10,7 +10,8 @@
     // false = seviye VEYA rol kelimesi yeterli (daha çok sonuç, daha çok gürültü).
     "requireBothGroups": true,
     // Açıklamada seviye araması yap (TR ilanları başlıkta junior yazmaz).
-    "useDescriptionForLevel": true
+    "useDescriptionForLevel": true,
+    "mode": "either",
   },
 
   // İzlemek istediğin şirketler (Greenhouse/Lever kullananlar).
